@@ -7,8 +7,8 @@ import pandas as pd
 import numpy as np
 
 # import training data
-train_data = pd.read_csv('train.csv')
-test_data = pd.read_csv('test.csv')
+train_data = pd.read_csv('./train.csv')
+test_data = pd.read_csv('./test.csv')
 
 # select the prediction target
 y = train_data['Survived']
@@ -16,7 +16,6 @@ y = train_data['Survived']
 # select and extract features on which to train the model
 features = ['Pclass', 'Sex', 'SibSp', 'Parch']
 X = pd.get_dummies(train_data[features]) # 'get_dummies' quantifies the 'sex' data
-
 
 # split training data into training and validation data
 train_X, val_X, train_y, val_y = train_test_split(X, y, random_state=0)
