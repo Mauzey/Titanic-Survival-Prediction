@@ -4,6 +4,7 @@ from sklearn.model_selection import train_test_split
 from sklearn.metrics import roc_auc_score
 
 from preprocessing import preprocess
+from preprocessing import featureEngineer
 
 import pandas as pd
 import numpy as np
@@ -22,10 +23,14 @@ y = train_data['Survived']
 train_data = preprocess(train_data)
 test_data = preprocess(test_data)
 
-print(train_data.head())
+#print(train_data.isnull().sum())
+
+# feature engineer data
+train_data = featureEngineer(train_data)
+test_data = featureEngineer(test_data)
 
 # select features on which to train the model
-features = ['Pclass', 'Sex', 'FamilySize']
+features = ['Pclass', 'Sex', 'FamilySize', 'Age']
 X = pd.get_dummies(train_data[features])
 X_test = pd.get_dummies(test_data[features])
 
@@ -44,7 +49,7 @@ else:
 # make predictions
 if not USE_TEST_DATA:
     val_predictions = model.predict(val_X)
-    print(roc_auc_score(val_y, val_predictions))
+    print("ROC Score:", roc_auc_score(val_y, val_predictions))
 else:
     predictions = model.predict(X_test)
 
