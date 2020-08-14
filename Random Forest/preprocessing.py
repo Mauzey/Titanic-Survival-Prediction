@@ -5,12 +5,12 @@ def preprocess(dataset):
     """
     Preprocesses a given dataset:
         * Combines 'SibSp' and 'Parch' into new field: 'FamilySize'
-        * Removes 'Embarked' and 'Cabin' fields as they serve little purpose
+        * Removes 'Embarked' and 'Cabin' fields as they serve little purpose (for now)
         * Fills missing values for 'Age' with the mean value within each 'Pclass'
     """
 
     # combine 'Parch' and 'SibSp' into new field: 'FamilySize'
-    dataset['FamilySize'] = dataset['SibSp'] + dataset['Parch']
+    dataset['FamilySize'] = dataset['SibSp'] + dataset['Parch'] + 1
     dataset = dataset.drop(['SibSp', 'Parch'], axis=1)
 
 
@@ -42,6 +42,10 @@ def featureEngineer(dataset):
         * Add 'Minor' feature (True if 'Age' < 16 or "Master" appears within the name)
     """
 
-    
+    # add 'Minor' tag (1 = True, 0 = False)
+    dataset['Minor'] = 0
+    dataset['Minor'] = np.where((dataset['Age'] < 16)
+                                | (dataset['Name'].str.contains("Master", regex=False)),
+                                1, dataset['Minor'])
 
     return dataset

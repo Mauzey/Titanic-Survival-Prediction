@@ -29,6 +29,8 @@ test_data = preprocess(test_data)
 train_data = featureEngineer(train_data)
 test_data = featureEngineer(test_data)
 
+#print(train_data.head(20))
+
 # select features on which to train the model
 features = ['Pclass', 'Sex', 'FamilySize', 'Age']
 X = pd.get_dummies(train_data[features])
