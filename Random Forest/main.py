@@ -26,7 +26,7 @@ print(train_data.head())
 y = train_data['Survived']
 
 # select features on which to train the model
-features = ['Pclass', 'Sex', 'Title']
+features = ['Pclass', 'Sex', 'Title', 'Age', 'IsAlone']
 X = pd.get_dummies(train_data[features])
 X_test = pd.get_dummies(test_data[features])
 
