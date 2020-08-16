@@ -7,15 +7,18 @@ def preprocess(dataset):
         * Drops features that do not significantly contribute to the model
         * Creates a 'Title' feature, extracted from 'Name'
         * Converts 'Sex' from categorical to numeric
-        * Fill missing 'Age' values with an estimate based on 'Pclass' and 'Gender'
+        * Fills missing 'Age' values with an estimate based on 'Pclass' and 'Gender'
             * 'Age' is then separated into bands:
                 <= 16, >16 & <=32, >32 & <=48, >48 & <=64, >64
         * Creates an 'IsAlone' feature, based on 'FamilySize'
             * 'FamilySize' is a sum of 'Parch' and 'SibSp'
+        * Creates an 'Age*Class' feature, the result of 'Age' multiplied by 'Pclass'
+        * Fills missing 'Fare' values with the median value
+        * Groups 'Fare' values based on 'FareBand'
     """
 
-    # DROP 'Ticket', 'Cabin', AND 'PassengerId' FEATURES
-    dataset = dataset.drop(['Ticket', 'Cabin', 'PassengerId'], axis=1)
+    # DROP 'Ticket' AND 'Cabin' FEATURES
+    dataset = dataset.drop(['Ticket', 'Cabin'], axis=1)
 
 
 
@@ -90,5 +93,36 @@ def preprocess(dataset):
 
     # drop 'Parch', 'SibSp', and 'FamilySize'
     dataset.drop(['Parch', 'SibSp', 'FamilySize'], axis=1)
+
+
+
+    # CREATE 'Age*Class' FEATURE
+    dataset['Age*Class'] = dataset['Age'] * dataset['Pclass']
+
+
+
+    # FILL MISSING 'Embarked' VALUES
+    most_frequent_port = dataset['Embarked'].dropna().mode()[0]
+    dataset['Embarked'] = dataset['Embarked'].fillna(most_frequent_port)
+
+
+
+    # FILL MISSING 'Fare' VALUES
+    dataset['Fare'].fillna(dataset['Fare'].dropna().median(), inplace=True)
+
+
+
+    # CREATE 'FareBand' FEATURE
+    dataset['FareBand'] = pd.qcut(dataset['Fare'], 4)
+
+    # convert 'Fare' values to ordinal based on 'FareBand'
+    dataset.loc[ dataset['Fare'] <= 7.91, 'Fare'] = 0
+    dataset.loc[(dataset['Fare'] > 7.91) & (dataset['Fare'] <= 14.454), 'Fare'] = 1
+    dataset.loc[(dataset['Fare'] > 14.454) & (dataset['Fare'] <= 31), 'Fare'] = 2
+    dataset.loc[ dataset['Fare'] > 31, 'Fare'] = 3
+
+    # typecast as int and drop 'FareBand' feature
+    dataset['Fare'] = dataset['Fare'].astype(int)
+    dataset = dataset.drop(['FareBand'], axis=1)
 
     return dataset

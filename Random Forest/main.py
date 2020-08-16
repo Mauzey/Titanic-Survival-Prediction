@@ -13,7 +13,7 @@ train_data = pd.read_csv('./train.csv')
 test_data = pd.read_csv('./test.csv')
 
 # use test data (for Kaggle submission), or validation data (for development)
-USE_TEST_DATA = False
+USE_TEST_DATA = True
 
 # pre-process data
 train_data = preprocess(train_data)
@@ -26,7 +26,7 @@ print(train_data.head())
 y = train_data['Survived']
 
 # select features on which to train the model
-features = ['Pclass', 'Sex', 'Title', 'Age', 'IsAlone']
+features = ['Pclass', 'Sex', 'Title', 'Age', 'IsAlone', 'Age*Class', 'Embarked', 'Fare']
 X = pd.get_dummies(train_data[features])
 X_test = pd.get_dummies(test_data[features])
 
