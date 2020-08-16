@@ -4,7 +4,6 @@ from sklearn.model_selection import train_test_split
 from sklearn.metrics import roc_auc_score
 
 from preprocessing import preprocess
-from preprocessing import featureEngineer
 
 import pandas as pd
 import numpy as np
@@ -16,23 +15,18 @@ test_data = pd.read_csv('./test.csv')
 # use test data (for Kaggle submission), or validation data (for development)
 USE_TEST_DATA = False
 
-# select the prediction target
-y = train_data['Survived']
-
 # pre-process data
 train_data = preprocess(train_data)
 test_data = preprocess(test_data)
 
 #print(train_data.isnull().sum())
+print(train_data.head())
 
-# feature engineer data
-train_data = featureEngineer(train_data)
-test_data = featureEngineer(test_data)
-
-#print(train_data.head(20))
+# select the prediction target
+y = train_data['Survived']
 
 # select features on which to train the model
-features = ['Pclass', 'Sex', 'FamilySize', 'Age']
+features = ['Pclass', 'Sex', 'Title']
 X = pd.get_dummies(train_data[features])
 X_test = pd.get_dummies(test_data[features])
 
