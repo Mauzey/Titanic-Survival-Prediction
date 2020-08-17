@@ -14,7 +14,7 @@ train_data = pd.read_csv('./train.csv')
 test_data = pd.read_csv('./test.csv')
 
 # use test data (for Kaggle submission), or validation data (for development)
-USE_TEST_DATA = False
+USE_TEST_DATA = True
 
 # pre-process data
 train_data = preprocess(train_data)
@@ -36,7 +36,6 @@ if not USE_TEST_DATA:
     train_X, val_X, train_y, val_y = train_test_split(X, y, random_state=0)
 
 # define and fit the model
-#model = RandomForestClassifier(n_estimators=100, max_depth=5, random_state=1)
 model = RandomForestClassifier(n_estimators=100, max_depth=5, max_features=0.5, random_state=1)
 
 if not USE_TEST_DATA:

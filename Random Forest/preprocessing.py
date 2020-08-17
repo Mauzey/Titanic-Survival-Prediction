@@ -87,6 +87,8 @@ def preprocess(dataset):
     # CREATE 'FamilySize' FEATURE
     dataset['FamilySize'] = dataset['SibSp'] + dataset['Parch'] + 1
 
+    # test
+
     # CREATE 'IsAlone' FEATURE
     dataset['IsAlone'] = 0
     dataset.loc[dataset['FamilySize'] == 1, 'IsAlone'] = 1
