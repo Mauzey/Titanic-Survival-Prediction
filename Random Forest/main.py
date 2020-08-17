@@ -1,6 +1,7 @@
 # import modules
-from sklearn.ensemble import RandomForestClassifier
 from sklearn.model_selection import train_test_split
+from sklearn.model_selection import GridSearchCV
+from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import roc_auc_score
 
 from preprocessing import preprocess
@@ -13,14 +14,14 @@ train_data = pd.read_csv('./train.csv')
 test_data = pd.read_csv('./test.csv')
 
 # use test data (for Kaggle submission), or validation data (for development)
-USE_TEST_DATA = True
+USE_TEST_DATA = False
 
 # pre-process data
 train_data = preprocess(train_data)
 test_data = preprocess(test_data)
 
 #print(train_data.isnull().sum())
-print(train_data.head())
+#print(train_data.head())
 
 # select the prediction target
 y = train_data['Survived']
