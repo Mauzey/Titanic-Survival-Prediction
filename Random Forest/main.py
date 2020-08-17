@@ -36,7 +36,8 @@ if not USE_TEST_DATA:
     train_X, val_X, train_y, val_y = train_test_split(X, y, random_state=0)
 
 # define and fit the model
-model = RandomForestClassifier(n_estimators=100, max_depth=5, random_state=1)
+#model = RandomForestClassifier(n_estimators=100, max_depth=5, random_state=1)
+model = RandomForestClassifier(n_estimators=100, max_depth=5, max_features=0.5, random_state=1)
 
 if not USE_TEST_DATA:
     model.fit(train_X, train_y)
